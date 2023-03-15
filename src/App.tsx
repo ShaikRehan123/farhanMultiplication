@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 
 function App() {
   const [multiplicationNumbers, setMultiplicationNumbers] = useState<number[]>([
-    98, 78, 879, 76, 39, 19, 77, 13, 87, 99,
+    // 98, 78, 879, 76, 39, 19, 77, 13, 87, 99,
   ]);
   const input = useRef<HTMLInputElement>(null);
   const [opened, { open, close }] = useDisclosure(false);
