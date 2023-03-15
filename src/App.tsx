@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 
 function App() {
   const [multiplicationNumbers, setMultiplicationNumbers] = useState<number[]>([
-    // 98, 78, 879, 76, 39, 19, 77, 13, 87, 99,
+    98, 78, 879, 76, 39, 19, 77, 13, 87, 99,
   ]);
   const input = useRef<HTMLInputElement>(null);
   const [opened, { open, close }] = useDisclosure(false);
@@ -133,9 +133,18 @@ function App() {
         className="grid grid-cols-5 gap-2 p-5"
         id="main_pdf_content_without_answers"
       >
-        <h2 className="text-2xl font-bold text-center col-span-5">
-          {topTitle}
-        </h2>
+        <div className="flex flex-row justify-between w-full col-span-5">
+          <h2 className="text-2xl font-bold text-center col-span-5">
+            Name: {"      "}
+          </h2>
+          <h2 className="text-2xl font-bold text-center col-span-5">
+            {topTitle}
+          </h2>
+          <h2 className="text-2xl font-bold text-center col-span-5">
+            Level:
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </h2>
+        </div>
 
         {multiplicationNumbers.map((number, i) => (
           <div
