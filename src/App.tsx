@@ -6,7 +6,7 @@ import jsPDF from "jspdf";
 
 function App() {
   const [multiplicationNumbers, setMultiplicationNumbers] = useState<number[]>([
-    // 98, 78, 879, 76, 39, 19, 77, 13, 87, 99,
+    98, 78, 879, 76, 39, 19, 77, 13, 87, 99,
   ]);
   const input = useRef<HTMLInputElement>(null);
   const [opened, { open, close }] = useDisclosure(false);
@@ -74,7 +74,7 @@ function App() {
     }
   };
   return (
-    <div className="bg-gray-100 min-h-screen p-10">
+    <div className="min-h-screen p-10">
       <Modal opened={opened} onClose={close} title="New Number">
         <Input
           placeholder="Number"
@@ -107,7 +107,7 @@ function App() {
 
         {multiplicationNumbers.map((number, i) => (
           <div
-            className="bg-white py-2  shadow-lg  border border-gray-900 border-solid rounded-md"
+            className="bg-white py-2    border border-gray-900 border-solid rounded-md"
             key={i}
           >
             {[...Array(10).keys()].map((i) => (
@@ -148,7 +148,7 @@ function App() {
 
         {multiplicationNumbers.map((number, i) => (
           <div
-            className="bg-white py-2  shadow-lg  border border-gray-900 border-solid rounded-md"
+            className="bg-white py-2    border border-gray-900 border-solid rounded-md"
             key={i}
           >
             {[...Array(10).keys()].map((i) => (
