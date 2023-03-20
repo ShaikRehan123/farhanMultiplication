@@ -68,7 +68,7 @@ function App() {
         const width = pdf.internal.pageSize.getWidth();
         const height = pdf.internal.pageSize.getHeight();
         pdf.addImage(imgData, "JPEG", 0, 0, width, height);
-        pdf.save(`${topTitle}_without_answers.pdf`);
+        pdf.save(`${topTitle} Without Answers.pdf`);
       });
       input2.style.setProperty("display", "none");
     }
