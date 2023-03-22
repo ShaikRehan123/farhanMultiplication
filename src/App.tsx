@@ -24,9 +24,22 @@ function App() {
     } else if (event.keyCode == 13) {
       event.preventDefault();
       // check if input is not 0 and valid
-      console.log(number);
-      if (number != 0) {
-        setMultiplicationNumbers([...multiplicationNumbers, number]);
+      // console.log(number);
+      // if (number != 0) {
+      //   setMultiplicationNumbers([...multiplicationNumbers, number]);
+      //   setNumber(0);
+      //   close();
+      // }
+
+      if (number.trim() === "") return;
+      if (number.includes(",")) {
+        const numbers = number.toString().split(",");
+        const numbersInt = numbers.map((n: any) => parseInt(n));
+        setMultiplicationNumbers([...multiplicationNumbers, ...numbersInt]);
+        setNumber(0);
+        close();
+      } else {
+        setMultiplicationNumbers([...multiplicationNumbers, parseInt(number)]);
         setNumber(0);
         close();
       }
@@ -34,7 +47,7 @@ function App() {
     console.log(event.keyCode);
   };
 
-  const [number, setNumber] = useState<number>(0);
+  const [number, setNumber] = useState<any>(0);
   const [topTitle, setTopTitle] = useState<string>("Your Title");
   const [removeNumberIndex, setRemoveNumberIndex] = useState<number>(-1);
   useEffect(() => {
@@ -80,9 +93,7 @@ function App() {
           placeholder="Number"
           onChange={(event) => {
             console.log(event.target.value);
-            if (/^\d+$/.test(event.target.value)) {
-              setNumber(parseInt(event.target.value));
-            }
+            setNumber(event.target.value);
           }}
           value={number}
           ref={input}
