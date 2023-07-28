@@ -111,8 +111,8 @@ function App() {
         value={topTitle}
       />
       <hr className="my-4 bg-gray-300" />
-      <div className="grid grid-cols-5 gap-2 p-5" id="main_pdf_content">
-        <h2 className="text-2xl font-bold text-center col-span-5">
+      <div className="grid grid-cols-4 gap-2 p-5" id="main_pdf_content">
+        <h2 className="text-2xl font-bold text-center col-span-4">
           {topTitle}
         </h2>
 
@@ -141,17 +141,17 @@ function App() {
       </div>
       <hr className="my-4 bg-gray-300" />
       <div
-        className="grid grid-cols-5 gap-2 p-5"
+        className="grid grid-cols-4 gap-2 p-5"
         id="main_pdf_content_without_answers"
       >
-        <div className="flex flex-row justify-between w-full col-span-5">
-          <h2 className="text-2xl font-bold text-center col-span-5">
+        <div className="flex flex-row justify-between w-full col-span-4">
+          <h2 className="text-2xl font-bold text-center col-span-4">
             Name: {"      "}
           </h2>
-          <h2 className="text-2xl font-bold text-center col-span-5">
+          <h2 className="text-2xl font-bold text-center col-span-4">
             {topTitle}
           </h2>
-          <h2 className="text-2xl font-bold text-center col-span-5">
+          <h2 className="text-2xl font-bold text-center col-span-4">
             Level:
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </h2>
