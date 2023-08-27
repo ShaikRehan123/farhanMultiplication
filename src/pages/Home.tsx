@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-function App() {
+function Home() {
   const [multiplicationNumbers, setMultiplicationNumbers] = useState<number[]>(
     []
   );
@@ -133,22 +133,6 @@ function App() {
             className="bg-white py-2    border border-gray-900 border-solid rounded-md"
             key={i}
           >
-            {/* {[...Array(10).keys()].map((i) => (
-              <>
-                <div
-                  key={i}
-                  className="flex flex-row justify-between  p-1  items-center  rounded-md font-bold "
-                >
-                  <span className="flex-1">{number}</span>
-                  <span className="flex-1">x</span>
-                  <span className="flex-1">{i + 1}</span>
-                  <span className="flex-1"> = </span>
-                  <span className="flex-1">{number * (i + 1)}</span>
-                </div>
-                {i !== 9 && <div className="h-[1px] bg-gray-300"></div>}
-              </>
-            ))} */}
-
             {type === "straight" ? (
               <>
                 {[...Array(10).keys()].map((i) => (
@@ -302,4 +286,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

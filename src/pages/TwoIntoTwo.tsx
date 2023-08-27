@@ -3,11 +3,15 @@ import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { createRange } from "../utils";
 
-function App() {
-  const [multiplicationNumbers, setMultiplicationNumbers] = useState<number[]>(
-    []
-  );
+function TwoIntoTwo() {
+  const [multiplicationNumbers, setMultiplicationNumbers] = useState<
+    {
+      number: number;
+      startingNumber: number;
+    }[]
+  >([]);
   const input = useRef<HTMLInputElement>(null);
   const [opened, { open, close }] = useDisclosure(false);
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -20,7 +24,6 @@ function App() {
       close();
     } else if (event.keyCode == 114) {
       event.preventDefault();
-      console.log(multiplicationNumbers);
     } else if (event.keyCode == 13) {
       event.preventDefault();
       // check if input is not 0 and valid
@@ -34,17 +37,44 @@ function App() {
       if (number.trim() === "") return;
       if (number.includes(",")) {
         const numbers = number.toString().split(",");
-        const numbersInt = numbers.map((n: any) => parseInt(n));
-        setMultiplicationNumbers([...multiplicationNumbers, ...numbersInt]);
-        setNumber(0);
+
+        const stateNumbers = [...multiplicationNumbers];
+
+        numbers.forEach((n: string) => {
+          const splitted = n.split("*");
+          if (splitted.length === 2) {
+            const firstNumber = parseInt(splitted[0]);
+            const secondNumber = parseInt(splitted[1]);
+            if (!isNaN(firstNumber) && !isNaN(secondNumber)) {
+              stateNumbers.push({
+                number: firstNumber,
+                startingNumber: secondNumber,
+              });
+            }
+          }
+        });
+        console.log(stateNumbers);
+
+        setMultiplicationNumbers(stateNumbers);
+
+        setNumber("");
         close();
       } else {
-        setMultiplicationNumbers([...multiplicationNumbers, parseInt(number)]);
-        setNumber(0);
+        const splitted = number.split("*");
+        if (splitted.length === 2) {
+          const firstNumber = parseInt(splitted[0]);
+          const secondNumber = parseInt(splitted[1]);
+          if (!isNaN(firstNumber) && !isNaN(secondNumber)) {
+            setMultiplicationNumbers([
+              ...multiplicationNumbers,
+              { number: firstNumber, startingNumber: secondNumber },
+            ]);
+          }
+        }
+        setNumber("");
         close();
       }
     }
-    console.log(event.keyCode);
   };
   const [type, setType] = useState<"straight" | "reverse">("straight");
 
@@ -93,7 +123,6 @@ function App() {
         <Input
           placeholder="Number"
           onChange={(event) => {
-            console.log(event.target.value);
             setNumber(event.target.value);
           }}
           value={number}
@@ -128,66 +157,55 @@ function App() {
           {topTitle}
         </h2>
 
-        {multiplicationNumbers.map((number, i) => (
-          <div
-            className="bg-white py-2    border border-gray-900 border-solid rounded-md"
-            key={i}
-          >
-            {/* {[...Array(10).keys()].map((i) => (
-              <>
-                <div
-                  key={i}
-                  className="flex flex-row justify-between  p-1  items-center  rounded-md font-bold "
-                >
-                  <span className="flex-1">{number}</span>
-                  <span className="flex-1">x</span>
-                  <span className="flex-1">{i + 1}</span>
-                  <span className="flex-1"> = </span>
-                  <span className="flex-1">{number * (i + 1)}</span>
-                </div>
-                {i !== 9 && <div className="h-[1px] bg-gray-300"></div>}
-              </>
-            ))} */}
+        {multiplicationNumbers.map((number, i) => {
+          const { number: num, startingNumber } = number;
+          const { straightArray, reverseArray } = createRange(startingNumber);
 
-            {type === "straight" ? (
-              <>
-                {[...Array(10).keys()].map((i) => (
-                  <>
-                    <div
-                      key={i}
-                      className="flex flex-row justify-between  p-1  items-center  rounded-md font-bold "
-                    >
-                      <span className="flex-1">{number}</span>
-                      <span className="flex-1">x</span>
-                      <span className="flex-1">{i + 1}</span>
-                      <span className="flex-1"> = </span>
-                      <span className="flex-1">{number * (i + 1)}</span>
-                    </div>
-                    {i !== 9 && <div className="h-[1px] bg-gray-300"></div>}
-                  </>
-                ))}
-              </>
-            ) : (
-              <>
-                {[...Array(10).keys()].reverse().map((i) => (
-                  <>
-                    <div
-                      key={i}
-                      className="flex flex-row justify-between  p-1  items-center  rounded-md font-bold "
-                    >
-                      <span className="flex-1">{number}</span>
-                      <span className="flex-1">x</span>
-                      <span className="flex-1">{i + 1}</span>
-                      <span className="flex-1"> = </span>
-                      <span className="flex-1">{number * (i + 1)}</span>
-                    </div>
-                    {i !== 9 && <div className="h-[1px] bg-gray-300"></div>}
-                  </>
-                ))}
-              </>
-            )}
-          </div>
-        ))}
+          return (
+            <div
+              className="bg-white py-2    border border-gray-900 border-solid rounded-md"
+              key={i}
+            >
+              {type === "straight" ? (
+                <>
+                  {straightArray.map((i) => (
+                    <>
+                      <div
+                        key={i}
+                        className="flex flex-row justify-between  p-1  items-center  rounded-md font-bold "
+                      >
+                        <span className="flex-1">{num}</span>
+                        <span className="flex-1">x</span>
+                        <span className="flex-1">{i}</span>
+                        <span className="flex-1"> = </span>
+                        <span className="flex-1">{num * i}</span>
+                      </div>
+                      {i !== 9 && <div className="h-[1px] bg-gray-300"></div>}
+                    </>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {reverseArray.map((i) => (
+                    <>
+                      <div
+                        key={i}
+                        className="flex flex-row justify-between  p-1  items-center  rounded-md font-bold "
+                      >
+                        <span className="flex-1">{num}</span>
+                        <span className="flex-1">x</span>
+                        <span className="flex-1">{i}</span>
+                        <span className="flex-1"> = </span>
+                        <span className="flex-1">{num * i}</span>
+                      </div>
+                      {i !== 9 && <div className="h-[1px] bg-gray-300"></div>}
+                    </>
+                  ))}
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
       <hr className="my-4 bg-gray-300" />
       <div
@@ -207,66 +225,56 @@ function App() {
           </h2>
         </div>
 
-        {multiplicationNumbers.map((number, i) => (
-          <div
-            className="bg-white py-2    border border-gray-900 border-solid rounded-md"
-            key={i}
-          >
-            {/* {[...Array(10).keys()].map((i) => (
-              <>
-                <div
-                  key={i}
-                  className="flex flex-row justify-between  p-1  items-center  rounded-md font-bold "
-                >
-                  <span className="flex-1">{number}</span>
-                  <span className="flex-1">x</span>
-                  <span className="flex-1">{i + 1}</span>
-                  <span className="flex-1"> = </span>
-                  <span className="flex-1"></span>
-                </div>
-                {i !== 9 && <div className="h-[1px] bg-gray-300"></div>}
-              </>
-            ))} */}
+        {multiplicationNumbers.map((number, i) => {
+          // if a number starting numberis 63 then the numbers should be 61,62,63,64,65,66,67,68,69,70 (straight) or 70,69,68,67,66,65,64,63,62,61 (reverse)
+          const { number: num, startingNumber } = number;
+          const { straightArray, reverseArray } = createRange(startingNumber);
 
-            {type === "straight" ? (
-              <>
-                {[...Array(10).keys()].map((i) => (
-                  <>
-                    <div
-                      key={i}
-                      className="flex flex-row justify-between  p-1  items-center  rounded-md font-bold "
-                    >
-                      <span className="flex-1">{number}</span>
-                      <span className="flex-1">x</span>
-                      <span className="flex-1">{i + 1}</span>
-                      <span className="flex-1"> = </span>
-                      <span className="flex-1"></span>
-                    </div>
-                    {i !== 9 && <div className="h-[1px] bg-gray-300"></div>}
-                  </>
-                ))}
-              </>
-            ) : (
-              <>
-                {[...Array(10).keys()].reverse().map((i) => (
-                  <>
-                    <div
-                      key={i}
-                      className="flex flex-row justify-between  p-1  items-center  rounded-md font-bold "
-                    >
-                      <span className="flex-1">{number}</span>
-                      <span className="flex-1">x</span>
-                      <span className="flex-1">{i + 1}</span>
-                      <span className="flex-1"> = </span>
-                      <span className="flex-1"></span>
-                    </div>
-                    {i !== 9 && <div className="h-[1px] bg-gray-300"></div>}
-                  </>
-                ))}
-              </>
-            )}
-          </div>
-        ))}
+          return (
+            <div
+              className="bg-white py-2    border border-gray-900 border-solid rounded-md"
+              key={i}
+            >
+              {type === "straight" ? (
+                <>
+                  {straightArray.map((i) => (
+                    <>
+                      <div
+                        key={i}
+                        className="flex flex-row justify-between  p-1  items-center  rounded-md font-bold "
+                      >
+                        <span className="flex-1">{num}</span>
+                        <span className="flex-1">x</span>
+                        <span className="flex-1">{i}</span>
+                        <span className="flex-1"> = </span>
+                        <span className="flex-1"></span>
+                      </div>
+                      {i !== 9 && <div className="h-[1px] bg-gray-300"></div>}
+                    </>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {reverseArray.map((i) => (
+                    <>
+                      <div
+                        key={i}
+                        className="flex flex-row justify-between  p-1  items-center  rounded-md font-bold "
+                      >
+                        <span className="flex-1">{num}</span>
+                        <span className="flex-1">x</span>
+                        <span className="flex-1">{i}</span>
+                        <span className="flex-1"> = </span>
+                        <span className="flex-1"></span>
+                      </div>
+                      {i !== 9 && <div className="h-[1px] bg-gray-300"></div>}
+                    </>
+                  ))}
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
       <div className="flex flex-row gap-4 justify-center mt-4">
         <Button onClick={open}>Add Number</Button>
@@ -302,4 +310,4 @@ function App() {
   );
 }
 
-export default App;
+export default TwoIntoTwo;
